@@ -1,0 +1,1 @@
+dbcc CHECKDB (innheimta) WITH NO_INFOMSGS, ALL_ERRORMSGS;

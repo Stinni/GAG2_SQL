@@ -9,9 +9,9 @@ SELECT  i.skilabod_a_greidslusedla
 		,i.id
 		,i.kennitala
 		,i.nafn
-		,ISNULL( heimili_heimili, heimili_thjodskra ) AS heimili
-		,ISNULL( postnumer_heimili, postnumer_thjodskra ) AS postnumer
-		,ISNULL( stadur_heimili, stadur_thjodskra ) AS stadur  
+		,ISNULL( heimili_heimili, heimili_thjodskra ) as heimili
+		,ISNULL( postnumer_heimili, postnumer_thjodskra ) as postnumer
+		,ISNULL( stadur_heimili, stadur_thjodskra ) as stadur  
 INTO 
 	#Temp
 FROM
@@ -21,12 +21,12 @@ FROM
 		,g.id
 		,t.kennitala
 		,t.nafn
-		,t.heimili AS heimili_thjodskra
-		,pt.postnumer AS postnumer_thjodskra
-		,pt.stadur AS stadur_thjodskra
-		,ph.postnumer AS postnumer_heimili
-		,ph.stadur AS stadur_heimili
-		,h.heimili_1 AS heimili_heimili
+		,t.heimili as heimili_thjodskra
+		,pt.postnumer as postnumer_thjodskra
+		,pt.stadur as stadur_thjodskra
+		,ph.postnumer as postnumer_heimili
+		,ph.stadur as stadur_heimili
+		,h.heimili_1 as heimili_heimili
 	FROM
 		vidskiptamadur v
 		,greidandi g
@@ -41,7 +41,7 @@ FROM
 ;
 SELECT
 	k.id
-	,ka.lysing AS ástand
+	,ka.lysing as ástand
 	,k.banki
 	,k.hofudbok
 	,k.numer
@@ -52,14 +52,14 @@ SELECT
 	,k.tilvisun
 	,k.sedilnumer
 	,k.vidskiptanumer
-	,vk.lysing AS vanskilagjaldstegund
-	,ds.lysing AS dráttarvaxtastofnkóði
-	,dr.lysing AS dráttarvaxtaregla
+	,vk.lysing as vanskilagjaldstegund
+	,ds.lysing as dráttarvaxtastofnkóði
+	,dr.lysing as dráttarvaxtaregla
 	,k.mynt_id
 	,m.gjaldmidill
-	,gk.lysing AS gengiskóði
-	,grk.lysing AS greiðslukóði
-	,ak.lysing AS afsláttarkóði
+	,gk.lysing as gengiskóði
+	,grk.lysing as greiðslukóði
+	,ak.lysing as afsláttarkóði
 	,k.athugasemd_1
 	,k.athugasemd_2
 	,k.stada_tilkynningar_og_greidslugjald_1
@@ -72,12 +72,12 @@ SELECT
 	,k.stada_afslattur
 	,k.upphaed_til_greidslu
 	,s.visir
-	,t.kennitala AS kennitala_greiðanda
-	,t.nafn AS nafn_greiðanda
+	,t.kennitala as kennitala_greiðanda
+	,t.nafn as nafn_greiðanda
 	,t.skilabod_a_greidslusedla
-	,t.heimili AS heimili_greiðanda
-	,t.postnumer AS póstnúmer_greiðanda
-	,t.stadur AS staður_greiðanda
+	,t.heimili as heimili_greiðanda
+	,t.postnumer as póstnúmer_greiðanda
+	,t.stadur as staður_greiðanda
 FROM
 	krafa k
 	LEFT OUTER JOIN vanskilagjaldskodi vk ON( k.vanskilagjaldskodi_id = vk.id )
@@ -99,13 +99,13 @@ WHERE
 	-- Test each of the following scenarios separetely
 	-- Scenario 1
 	/*
-	AND k.gjalddagi between cast('1/1/2008' AS date ) and cast('1/1/2009' AS date )
+	AND k.gjalddagi between cast('1/1/2008' as date ) and cast('1/1/2009' as date )
 	AND k.astand_id in ( select id from krafa_astand where lysing = 'Greidd' )
 	*/
-	-- Scenario 2
+	-- Sccenario 2
 	/*
 	AND k.samningur_id = ( select top 1 id from samningur where vidskiptamadur_id = '1' order by id ) /*{1,10,40,200}*/ -- Keep this in synch with with the customer filtering above!
-	AND k.gjalddagi between cast('1/1/2010' AS date ) and cast('1/1/2013' AS date )
+	AND k.gjalddagi between cast('1/1/2010' as date ) and cast('1/1/2013' as date )
 	AND k.tilvisun IS NOT NULL
 	*/
 	-- Scenario 3

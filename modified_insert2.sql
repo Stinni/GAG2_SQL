@@ -1,10 +1,14 @@
+USE innheimta;
+GO
 dbcc freeproccache; -- Throw away execution plans, among other things
 dbcc dropcleanbuffers; -- Empty the (block) buffer cache
-
-set nocount on;
-
-SET STATISTICS TIME ON;
-SET STATISTICS IO ON;
+GO
+-- Basic
+SET nocount on;
+SET STATISTICS TIME, IO ON;
+GO
+-- Query to run
+--------------------------------------------------
 
 declare @vskm_id int = 1;
 
@@ -51,3 +55,16 @@ PRINT 'Iterations: ' + convert( nvarchar, @iterations );
 
 set nocount off;
 delete krafa where tilvisun = 'PRÓFUN_EYÐA'; -- You should perform this cleanup in order for all other measurements to remain unchanged.
+--------------------------------------------------
+GO
+SET STATISTICS TIME, IO OFF;
+GO
+SELECT last_worker_time AS CPU_time_microseconds, last_elapsed_time AS wallclock_time_microseconds, last_rows AS rows_returned, last_logical_reads AS logical_reads, last_physical_reads AS physical_reads, last_logical_writes AS logical_writes, execution_count, query_string
+FROM sys.dm_exec_query_stats
+CROSS APPLY (SELECT SUBSTRING(text, statement_start_offset/2 + 1,
+	(CASE WHEN statement_end_offset = -1
+	THEN LEN(CONVERT(nvarchar(MAX),text)) * 2
+	ELSE statement_end_offset
+	END - statement_start_offset)/2) AS query_string
+	FROM sys.dm_exec_sql_text(sql_handle)
+	) AS query_text

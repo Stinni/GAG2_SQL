@@ -3,9 +3,6 @@ dbcc dropcleanbuffers; -- Empty the (block) buffer cache
 
 set nocount on;
 
-SET STATISTICS TIME ON;
-SET STATISTICS IO ON;
-
 declare @vskm_id int = 1;
 
 declare @samningur_id int = ( select top 1 id from samningur where vidskiptamadur_id = @vskm_id order by id );
